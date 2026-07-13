@@ -34,13 +34,14 @@ export function buildScanSummary(result: ScanResult, severityThreshold?: Severit
   const total = findings.length;
 
   const parts: string[] = [];
-  for (const severity of ["critical", "high", "medium", "low"] as Severity[]) {
+  for (const severity of ["critical", "high", "medium", "low", "info"] as Severity[]) {
     if (countsBySeverity[severity] > 0) parts.push(`${countsBySeverity[severity]} ${severity}`);
   }
+  const breakdown = parts.length > 0 ? ` (${parts.join(", ")})` : "";
   const headline =
     total === 0
       ? `No security issues found. Score ${score}/100 (grade ${grade}).`
-      : `Found ${total} issue${total === 1 ? "" : "s"} (${parts.join(", ")}). Score ${score}/100 (grade ${grade}).`;
+      : `Found ${total} issue${total === 1 ? "" : "s"}${breakdown}. Score ${score}/100 (grade ${grade}).`;
 
   const summary: ScanSummary = {
     headline,

@@ -78,6 +78,13 @@ describe("buildScanSummary", () => {
     expect(summary.topFindings[0]?.shortAction).toBe(sampleFinding.shortAction);
   });
 
+  it("does not leave dangling empty parentheses when every finding is info-level", () => {
+    const infoOnlyFinding: Finding = { ...sampleFinding, severity: "info", id: "info-only" };
+    const summary = buildScanSummary(makeResult([infoOnlyFinding]));
+    expect(summary.headline).not.toContain("()");
+    expect(summary.headline).toContain("1 info");
+  });
+
   it("sets recommendation based on severityThreshold without blocking anything itself", () => {
     const result = makeResult([sampleFinding]);
     const summary = buildScanSummary(result, "critical");
