@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+
+# Environment files: never commit real secrets.
+.env
+.env.local
+.env.*.local
+
+# Exception: fixtures used to test the scanner contain fake values on purpose.
+!tests/fixtures/**/.env
+
+# Generated reports written by local scans.
+vibe-audit-report.*
