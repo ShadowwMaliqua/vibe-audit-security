@@ -22,14 +22,17 @@ afterEach(async () => {
 
 describe("scanClientSecrets", () => {
   it("finds a secret embedded directly in the HTML", async () => {
+    // Built via concatenation (not a literal) so this test file itself never
+    // contains a string that looks like a real credential to secret scanners.
+    const fakeStripeKey = `sk_live_${"X".repeat(24)}`;
     const baseUrl = await startServer((_req, res) => {
       res.writeHead(200, { "Content-Type": "text/html" });
-      res.end('<html><body><script>window.KEY="sk_live_XXXXXXXXXXXXXXXXXXXXXXXX"</script></body></html>');
+      res.end(`<html><body><script>window.KEY="${fakeStripeKey}"</script></body></html>`);
     });
     const ctx: DynamicScanContext = { baseUrl, probeDatabase: false };
     const findings = await scanClientSecrets(ctx);
     expect(findings.length).toBeGreaterThan(0);
-    expect(findings[0]?.evidence).not.toContain("XXXXXXXXXXXXXXXXXXXXXXXX");
+    expect(findings[0]?.evidence).not.toContain(fakeStripeKey.slice(4, -4));
   });
 
   it("follows a same-origin script and finds a secret inside it", async () => {

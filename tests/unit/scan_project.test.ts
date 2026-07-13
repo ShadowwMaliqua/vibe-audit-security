@@ -23,7 +23,10 @@ describe("scanProject", () => {
 
   it("merges code and url findings into a single mode:project result", async () => {
     rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "vibe-audit-project-"));
-    await fs.writeFile(path.join(rootDir, "server.js"), 'const key = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";');
+    // Built via concatenation (not a literal) so this test file itself never
+    // contains a string that looks like a real credential to secret scanners.
+    const fakeStripeKey = `sk_live_${"X".repeat(24)}`;
+    await fs.writeFile(path.join(rootDir, "server.js"), `const key = "${fakeStripeKey}";`);
 
     server = http.createServer((_req, res) => {
       res.writeHead(200, { "Content-Type": "text/plain" });
