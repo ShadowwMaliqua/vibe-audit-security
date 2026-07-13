@@ -5,8 +5,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const STRIPE_SECRET_KEY = "sk_live_51H8x9J2eZvKYlo2CJ9x8FAKEKEYFORTESTINGONLY";
-const AWS_ACCESS_KEY_ID = "AKIAFAKEKEY1234EXAMPLE";
+const STRIPE_SECRET_KEY = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";
+const AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE";
 
 // Wide-open CORS: wildcard origin combined with credentials enabled.
 app.use(cors({ origin: "*", credentials: true }));

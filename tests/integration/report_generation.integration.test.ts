@@ -9,7 +9,7 @@ import { scanCode } from "../../src/core/scan_code.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const VULNERABLE_PROJECT = path.join(__dirname, "..", "fixtures", "vulnerable-project");
 
-const RAW_SECRETS = ["51H8x9J2eZvKYlo2CJ9x8FAKEKEYFORTESTINGONLY", "SuperSecretPass123", "AKIAFAKEKEY1234EXAMPLE"];
+const RAW_SECRETS = ["XXXXXXXXXXXXXXXXXXXXXXXX", "changeme_fake_password_123", "AKIAIOSFODNN7EXAMPLE"];
 
 describe("report generation on the vulnerable fixture", () => {
   it("produces a JSON report with the expected findings and no raw secrets", async () => {

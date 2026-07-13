@@ -23,19 +23,19 @@ describe("scanSecrets", () => {
   }
 
   it("detects a hardcoded Stripe live key and masks it in the report", async () => {
-    await writeFile("server.js", 'const stripeKey = "sk_live_51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal";');
+    await writeFile("server.js", 'const stripeKey = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";');
     const ctx: StaticScanContext = { rootDir, files: ["server.js"] };
     const findings = await scanSecrets(ctx);
 
     expect(findings).toHaveLength(1);
     expect(findings[0]?.severity).toBe("critical");
     expect(findings[0]?.category).toBe("secrets");
-    expect(findings[0]?.evidence).not.toContain("51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal");
-    expect(findings[0]?.codeBefore).not.toContain("sk_live_51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal");
+    expect(findings[0]?.evidence).not.toContain("XXXXXXXXXXXXXXXXXXXXXXXX");
+    expect(findings[0]?.codeBefore).not.toContain("sk_live_XXXXXXXXXXXXXXXXXXXXXXXX");
   });
 
   it("detects an AWS access key ID", async () => {
-    await writeFile(".env", "AWS_ACCESS_KEY_ID=AKIAABCDEFGHIJKLMNOP\n");
+    await writeFile(".env", "AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE\n");
     const ctx: StaticScanContext = { rootDir, files: [".env"] };
     const findings = await scanSecrets(ctx);
     expect(findings.some((f) => f.id.startsWith("secret-aws-access-key-id"))).toBe(true);
