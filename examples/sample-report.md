@@ -9,7 +9,7 @@
 
 | Severity | Count |
 |---|---|
-| 🔴 Critical | 11 |
+| 🔴 Critical | 12 |
 | 🟠 High | 2 |
 | 🟡 Medium | 0 |
 | 🔵 Low | 0 |
@@ -25,10 +25,10 @@
 
 A value matching the pattern for a Stripe live secret key was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
 
-**Evidence (masked):** `sk_l******************************************ONLY`
+**Evidence (masked):** `sk_l************************XXXX`
 
 ```
-STRIPE_SECRET_KEY=sk_l******************************************ONLY
+STRIPE_SECRET_KEY=sk_l************************XXXX
 ```
 
 **Recommendation:** Move this value to an environment variable (loaded via .env, which must stay in .gitignore) or a secrets manager, and rotate/revoke the exposed credential now since it may already be compromised.
@@ -41,10 +41,10 @@ STRIPE_SECRET_KEY=sk_l******************************************ONLY
 
 A value matching the pattern for a database connection string with embedded credentials was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
 
-**Evidence (masked):** `post***********************************************5432`
+**Evidence (masked):** `post*******************************************************5432`
 
 ```
-DATABASE_URL=post***********************************************5432/prod
+DATABASE_URL=post*******************************************************5432/prod
 ```
 
 **Recommendation:** Move this value to an environment variable (loaded via .env, which must stay in .gitignore) or a secrets manager, and rotate/revoke the exposed credential now since it may already be compromised.
@@ -57,15 +57,31 @@ DATABASE_URL=post***********************************************5432/prod
 
 A value matching the pattern for a Stripe live secret key was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
 
-**Evidence (masked):** `sk_l******************************************ONLY`
+**Evidence (masked):** `sk_l************************XXXX`
 
 ```
-const STRIPE_SECRET_KEY = "sk_l******************************************ONLY";
+const STRIPE_SECRET_KEY = "sk_l************************XXXX";
 ```
 
 **Recommendation:** Move this value to an environment variable (loaded via .env, which must stay in .gitignore) or a secrets manager, and rotate/revoke the exposed credential now since it may already be compromised.
 
-### 4. Sensitive file not excluded by .gitignore: .env
+### 4. AWS access key ID found in source code
+
+**Severity:** 🔴 Critical  
+**Category:** secrets  
+**Location:** `server.js:9`  
+
+A value matching the pattern for a AWS access key ID was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
+
+**Evidence (masked):** `AKIA************MPLE`
+
+```
+const AWS_ACCESS_KEY_ID = "AKIA************MPLE";
+```
+
+**Recommendation:** Move this value to an environment variable (loaded via .env, which must stay in .gitignore) or a secrets manager, and rotate/revoke the exposed credential now since it may already be compromised.
+
+### 5. Sensitive file not excluded by .gitignore: .env
 
 **Severity:** 🔴 Critical  
 **Category:** gitignore  
@@ -75,7 +91,7 @@ const STRIPE_SECRET_KEY = "sk_l******************************************ONLY";
 
 **Recommendation:** Add an entry covering this file to .gitignore (for example ".env" or a matching pattern), then remove it from git history if it was already committed.
 
-### 5. Table "profiles" created without Row Level Security
+### 6. Table "profiles" created without Row Level Security
 
 **Severity:** 🔴 Critical  
 **Category:** database-rules  
@@ -85,7 +101,7 @@ Migration "supabase/migrations/0001_init.sql" creates a table named "profiles", 
 
 **Recommendation:** Add "ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;" plus explicit policies for the operations you actually want to allow (select/insert/update/delete), in a migration.
 
-### 6. Table "orders" created without Row Level Security
+### 7. Table "orders" created without Row Level Security
 
 **Severity:** 🔴 Critical  
 **Category:** database-rules  
@@ -95,7 +111,7 @@ Migration "supabase/migrations/0001_init.sql" creates a table named "orders", bu
 
 **Recommendation:** Add "ALTER TABLE orders ENABLE ROW LEVEL SECURITY;" plus explicit policies for the operations you actually want to allow (select/insert/update/delete), in a migration.
 
-### 7. Firestore rule allows unrestricted access
+### 8. Firestore rule allows unrestricted access
 
 **Severity:** 🔴 Critical  
 **Category:** database-rules  
@@ -109,7 +125,7 @@ allow read, write: if true;
 
 **Recommendation:** Scope the rule to authenticated, authorized requests, e.g. "allow read, write: if request.auth != null && request.auth.uid == resource.data.ownerId;".
 
-### 8. CORS allows any origin together with credentials
+### 9. CORS allows any origin together with credentials
 
 **Severity:** 🔴 Critical  
 **Category:** cors  
@@ -123,7 +139,7 @@ This CORS configuration combines a wildcard/any origin with credentials enabled.
 
 **Recommendation:** List explicit allowed origins (e.g. your production domain and localhost for dev) instead of "*" or reflecting the request Origin, and only enable credentials for those explicit origins.
 
-### 9. TLS certificate verification disabled (verify=False)
+### 10. TLS certificate verification disabled (verify=False)
 
 **Severity:** 🔴 Critical  
 **Category:** dangerous-patterns  
@@ -137,7 +153,7 @@ return requests.get(url, verify=False)
 
 **Recommendation:** Remove verify=False (or set it to True / a CA bundle path). If this was added to work around a certificate problem, fix the certificate instead.
 
-### 10. SQL query built with an f-string
+### 11. SQL query built with an f-string
 
 **Severity:** 🔴 Critical  
 **Category:** dangerous-patterns  
@@ -151,7 +167,7 @@ query = f"SELECT * FROM users WHERE id = {user_id}"
 
 **Recommendation:** Use your database driver's parameterized query syntax (e.g. cursor.execute(query, params)) instead of an f-string.
 
-### 11. SQL query built with string concatenation
+### 12. SQL query built with string concatenation
 
 **Severity:** 🔴 Critical  
 **Category:** dangerous-patterns  
@@ -165,7 +181,7 @@ const query = "SELECT * FROM users WHERE id = " + userId;
 
 **Recommendation:** Use parameterized queries / prepared statements instead of building SQL strings by hand.
 
-### 12. Debug mode hardcoded to True
+### 13. Debug mode hardcoded to True
 
 **Severity:** 🟠 High  
 **Category:** dangerous-patterns  
@@ -179,7 +195,7 @@ DEBUG = True
 
 **Recommendation:** Load DEBUG from an environment variable (e.g. os.environ.get("DEBUG") == "true") and make sure production deployments default to False.
 
-### 13. Use of eval()
+### 14. Use of eval()
 
 **Severity:** 🟠 High  
 **Category:** dangerous-patterns  
@@ -193,7 +209,7 @@ const result = eval(req.body.expression);
 
 **Recommendation:** Avoid eval() entirely. Use JSON.parse for data, or a proper parser for anything more complex.
 
-### 14. pip-audit is not installed
+### 15. pip-audit is not installed
 
 **Severity:** ⚪ Info  
 **Category:** dependencies  

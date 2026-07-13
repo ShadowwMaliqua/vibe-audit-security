@@ -96,7 +96,7 @@ describe("generatePdfReport", () => {
     expect(buffer.subarray(0, 5).toString("ascii")).toBe("%PDF-");
     // pdfkit doesn't compress text streams by default, so a naive substring
     // check is a meaningful (if not airtight) guard against raw secret leakage.
-    expect(buffer.toString("latin1")).not.toContain("sk_live_51H8x9J2eZvKYlo2CJ9x8");
+    expect(buffer.toString("latin1")).not.toContain("sk_live_XXXXXXXXXXXXXXXXXXXXXXXX");
   });
 
   it("handles an empty findings list", async () => {

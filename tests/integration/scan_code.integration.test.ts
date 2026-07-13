@@ -40,9 +40,9 @@ describe("scanCode on the vulnerable fixture", () => {
   it("never leaks a raw secret value in any finding", async () => {
     const result = await scanCode(VULNERABLE_PROJECT);
     const serialized = JSON.stringify(result);
-    expect(serialized).not.toContain("51H8x9J2eZvKYlo2CJ9x8FAKEKEYFORTESTINGONLY");
-    expect(serialized).not.toContain("SuperSecretPass123");
-    expect(serialized).not.toContain("AKIAFAKEKEY1234EXAMPLE");
+    expect(serialized).not.toContain("XXXXXXXXXXXXXXXXXXXXXXXX");
+    expect(serialized).not.toContain("changeme_fake_password_123");
+    expect(serialized).not.toContain("AKIAIOSFODNN7EXAMPLE");
   });
 
   it("sorts findings worst severity first", async () => {

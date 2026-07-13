@@ -3,17 +3,17 @@ import { maskInText, maskSecret } from "../../src/core/mask_secret.js";
 
 describe("maskSecret", () => {
   it("never returns the raw value", () => {
-    const secret = "sk_live_51H8x9J2eZvKYlo2CJ9x8example";
+    const secret = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";
     const masked = maskSecret(secret);
     expect(masked).not.toBe(secret);
     expect(masked).not.toContain(secret.slice(4, -4));
   });
 
   it("keeps a short prefix and suffix for long secrets", () => {
-    const secret = "AKIAABCDEFGHIJKLMNOP";
+    const secret = "AKIAIOSFODNN7EXAMPLE";
     const masked = maskSecret(secret);
     expect(masked.startsWith("AKIA")).toBe(true);
-    expect(masked.endsWith("MNOP")).toBe(true);
+    expect(masked.endsWith("MPLE")).toBe(true);
     expect(masked).toContain("*");
   });
 
@@ -35,7 +35,7 @@ describe("maskSecret", () => {
 
 describe("maskInText", () => {
   it("replaces every occurrence of the secret inside a larger string", () => {
-    const secret = "sk_live_51H8x9J2eZvKYlo2CJ9x8example";
+    const secret = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";
     const text = `const stripeKey = "${secret}"; // do not commit`;
     const sanitized = maskInText(text, secret);
     expect(sanitized).not.toContain(secret);

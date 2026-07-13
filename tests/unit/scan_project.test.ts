@@ -23,7 +23,7 @@ describe("scanProject", () => {
 
   it("merges code and url findings into a single mode:project result", async () => {
     rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "vibe-audit-project-"));
-    await fs.writeFile(path.join(rootDir, "server.js"), 'const key = "sk_live_51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal";');
+    await fs.writeFile(path.join(rootDir, "server.js"), 'const key = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";');
 
     server = http.createServer((_req, res) => {
       res.writeHead(200, { "Content-Type": "text/plain" });

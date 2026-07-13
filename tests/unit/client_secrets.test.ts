@@ -24,19 +24,19 @@ describe("scanClientSecrets", () => {
   it("finds a secret embedded directly in the HTML", async () => {
     const baseUrl = await startServer((_req, res) => {
       res.writeHead(200, { "Content-Type": "text/html" });
-      res.end('<html><body><script>window.KEY="sk_live_51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal"</script></body></html>');
+      res.end('<html><body><script>window.KEY="sk_live_XXXXXXXXXXXXXXXXXXXXXXXX"</script></body></html>');
     });
     const ctx: DynamicScanContext = { baseUrl, probeDatabase: false };
     const findings = await scanClientSecrets(ctx);
     expect(findings.length).toBeGreaterThan(0);
-    expect(findings[0]?.evidence).not.toContain("51H8x9J2eZvKYlo2CJ9x8ExampleKeyLooksReal");
+    expect(findings[0]?.evidence).not.toContain("XXXXXXXXXXXXXXXXXXXXXXXX");
   });
 
   it("follows a same-origin script and finds a secret inside it", async () => {
     const baseUrl = await startServer((req, res) => {
       if (req.url === "/bundle.js") {
         res.writeHead(200, { "Content-Type": "application/javascript" });
-        res.end('const AWS_KEY = "AKIAABCDEFGHIJKLMNOP";');
+        res.end('const AWS_KEY = "AKIAIOSFODNN7EXAMPLE";');
         return;
       }
       res.writeHead(200, { "Content-Type": "text/html" });
