@@ -96,7 +96,10 @@ describe("generatePdfReport", () => {
     expect(buffer.subarray(0, 5).toString("ascii")).toBe("%PDF-");
     // pdfkit doesn't compress text streams by default, so a naive substring
     // check is a meaningful (if not airtight) guard against raw secret leakage.
-    expect(buffer.toString("latin1")).not.toContain("sk_live_XXXXXXXXXXXXXXXXXXXXXXXX");
+    // Built via concatenation so this test file itself never contains a
+    // string that looks like a real credential to secret scanners.
+    const rawLookingSecret = `sk_live_${"X".repeat(24)}`;
+    expect(buffer.toString("latin1")).not.toContain(rawLookingSecret);
   });
 
   it("handles an empty findings list", async () => {

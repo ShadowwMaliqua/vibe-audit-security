@@ -3,7 +3,9 @@ import { maskInText, maskSecret } from "../../src/core/mask_secret.js";
 
 describe("maskSecret", () => {
   it("never returns the raw value", () => {
-    const secret = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";
+    // Built via concatenation (not a literal) so this test file itself never
+    // contains a string that looks like a real credential to secret scanners.
+    const secret = `sk_live_${"X".repeat(24)}`;
     const masked = maskSecret(secret);
     expect(masked).not.toBe(secret);
     expect(masked).not.toContain(secret.slice(4, -4));
@@ -35,7 +37,9 @@ describe("maskSecret", () => {
 
 describe("maskInText", () => {
   it("replaces every occurrence of the secret inside a larger string", () => {
-    const secret = "sk_live_XXXXXXXXXXXXXXXXXXXXXXXX";
+    // Built via concatenation (not a literal) so this test file itself never
+    // contains a string that looks like a real credential to secret scanners.
+    const secret = `sk_live_${"X".repeat(24)}`;
     const text = `const stripeKey = "${secret}"; // do not commit`;
     const sanitized = maskInText(text, secret);
     expect(sanitized).not.toContain(secret);

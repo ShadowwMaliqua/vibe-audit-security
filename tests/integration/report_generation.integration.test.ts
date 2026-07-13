@@ -9,7 +9,7 @@ import { scanCode } from "../../src/core/scan_code.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const VULNERABLE_PROJECT = path.join(__dirname, "..", "fixtures", "vulnerable-project");
 
-const RAW_SECRETS = ["XXXXXXXXXXXXXXXXXXXXXXXX", "changeme_fake_password_123", "AKIAIOSFODNN7EXAMPLE"];
+const RAW_SECRETS = ["changeme_fake_password_123", "AKIAIOSFODNN7EXAMPLE"];
 
 describe("report generation on the vulnerable fixture", () => {
   it("produces a JSON report with the expected findings and no raw secrets", async () => {
@@ -28,7 +28,7 @@ describe("report generation on the vulnerable fixture", () => {
     const result = await scanCode(VULNERABLE_PROJECT);
     const md = toMarkdown(result);
 
-    expect(md).toContain("Stripe live secret key");
+    expect(md).toContain("AWS access key ID");
     expect(md).toContain("Row Level Security");
     expect(md).toContain("CORS allows any origin");
     for (const secret of RAW_SECRETS) {

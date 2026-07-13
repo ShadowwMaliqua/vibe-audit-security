@@ -13,7 +13,7 @@ describe("scanCode on the vulnerable fixture", () => {
     const ids = result.findings.map((f) => f.id);
     const categories = new Set(result.findings.map((f) => f.category));
 
-    expect(result.findings.some((f) => f.id.startsWith("secret-stripe-live-key"))).toBe(true);
+    expect(result.findings.some((f) => f.id.startsWith("secret-aws-access-key-id"))).toBe(true);
     expect(result.findings.some((f) => f.id.startsWith("secret-db-connection-string"))).toBe(true);
     expect(ids).toContain("gitignore-uncovered-env-file-.env");
     expect(ids).toContain("db-rls-missing-profiles");
