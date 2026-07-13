@@ -23,7 +23,7 @@
 **Category:** secrets  
 **Location:** `.env:2`  
 
-A value matching the pattern for a AWS access key ID was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
+A value matching the pattern for a AWS access key ID was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed, even if the file is deleted afterwards, it stays in git history.
 
 **Evidence (masked):** `AKIA************MPLE`
 
@@ -39,7 +39,7 @@ AWS_ACCESS_KEY_ID=AKIA************MPLE
 **Category:** secrets  
 **Location:** `.env:1`  
 
-A value matching the pattern for a database connection string with embedded credentials was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
+A value matching the pattern for a database connection string with embedded credentials was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed, even if the file is deleted afterwards, it stays in git history.
 
 **Evidence (masked):** `post*******************************************************5432`
 
@@ -55,7 +55,7 @@ DATABASE_URL=post*******************************************************5432/pro
 **Category:** secrets  
 **Location:** `server.js:8`  
 
-A value matching the pattern for a AWS access key ID was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed — even if the file is deleted afterwards, it stays in git history.
+A value matching the pattern for a AWS access key ID was found hardcoded in the source code. If this file is ever committed to version control, the secret is compromised the moment it is pushed, even if the file is deleted afterwards, it stays in git history.
 
 **Evidence (masked):** `AKIA************MPLE`
 
@@ -71,7 +71,7 @@ const AWS_ACCESS_KEY_ID = "AKIA************MPLE";
 **Category:** gitignore  
 **Location:** `.env`  
 
-".env" looks like a environment file, but it is not covered by any .gitignore rule. If this repository is committed as-is, this file — and any secret inside it — will be pushed to version control.
+".env" looks like a environment file, but it is not covered by any .gitignore rule. If this repository is committed as-is, this file (and any secret inside it) will be pushed to version control.
 
 **Recommendation:** Add an entry covering this file to .gitignore (for example ".env" or a matching pattern), then remove it from git history if it was already committed.
 
@@ -115,7 +115,7 @@ allow read, write: if true;
 **Category:** cors  
 **Location:** `server.js:11`  
 
-This CORS configuration combines a wildcard/any origin with credentials enabled. Browsers already forbid this combination for real credentialed requests, so servers that accept it typically end up reflecting the request's Origin header — which lets any website read authenticated responses from this API on behalf of a logged-in visitor.
+This CORS configuration combines a wildcard/any origin with credentials enabled. Browsers already forbid this combination for real credentialed requests, so servers that accept it typically end up reflecting the request's Origin header, which lets any website read authenticated responses from this API on behalf of a logged-in visitor.
 
 ```
 { origin: "*", credentials: true }

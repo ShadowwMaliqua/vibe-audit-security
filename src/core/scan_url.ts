@@ -21,7 +21,7 @@ function dynamicScannerErrorFinding(scannerName: string, err: unknown): Finding 
     title: `A scan step could not complete (${scannerName})`,
     severity: "info",
     category: "scan-error",
-    shortAction: "No action needed unless this repeats — informational only",
+    shortAction: "No action needed unless this repeats, informational only",
     description: `One of the dynamic scan steps failed to complete: ${err instanceof Error ? err.message : String(err)}`,
     recommendation: "Re-run the scan; if it persists, the target may be blocking automated requests or is unreachable.",
   };

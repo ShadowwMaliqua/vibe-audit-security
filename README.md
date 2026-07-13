@@ -1,10 +1,10 @@
 # vibe-audit
 
-A local security scanner for vibe-coded projects — apps built with AI coding
+A local security scanner for vibe-coded projects, apps built with AI coding
 assistants (Claude, Cursor, etc). It catches the kind of security mistakes an
 AI assistant can introduce without anyone noticing: hardcoded API keys,
 disabled Row Level Security, wide-open CORS, missing security headers, and
-more — before you `git push` or deploy.
+more, before you `git push` or deploy.
 
 It ships as both a **CLI** and an **MCP server** you can wire into Claude
 Code, so Claude can scan your project and summarize the findings in plain
@@ -20,11 +20,11 @@ Computer Misuse Act (UK), similar laws elsewhere, or a service's terms of
 use. You are solely responsible for how you use this tool. This disclaimer
 is also printed every time you run the CLI. The `--probe-database` flag
 prints an additional warning before it runs, since it sends extra requests
-to your database's REST API (still read-only — see below).
+to your database's REST API (still read-only, see below).
 
 ## What it checks
 
-### Mode 1 — `scan-code` (static, local project directory)
+### Mode 1: `scan-code` (static, local project directory)
 
 - **Hardcoded secrets**: Stripe live keys, AWS access keys, Google API keys,
   GitHub tokens, Slack tokens/webhooks, PEM private key blocks, database
@@ -45,7 +45,7 @@ to your database's REST API (still read-only — see below).
 - **Vulnerable dependencies**: wraps `npm audit` and (if installed)
   `pip-audit` for whichever manifests are present.
 
-### Mode 2 — `scan-url` (dynamic, a running URL)
+### Mode 2: `scan-url` (dynamic, a running URL)
 
 - **Missing security headers**: CSP, HSTS, X-Frame-Options,
   X-Content-Type-Options.
@@ -53,7 +53,7 @@ to your database's REST API (still read-only — see below).
   `Access-Control-Allow-Credentials: true`.
 - **Cookies** missing `Secure`, `HttpOnly`, or `SameSite`.
 - **Exposed sensitive files**: `.env`, `.git/config`, `.git/HEAD`, config
-  backups, etc — with a baseline check against a random nonexistent path so
+  backups, etc, with a baseline check against a random nonexistent path so
   a single-page app that returns 200 for every route doesn't flood you with
   false positives.
 - **Client-side secrets**: the same secret patterns as mode 1, scanned
@@ -63,7 +63,7 @@ to your database's REST API (still read-only — see below).
   `GET` requests to a fixed list of common table names
   (`users`, `profiles`, `customers`, `accounts`, `orders`, `messages`,
   `leads`) to check whether RLS actually blocks anonymous access. Never
-  writes, updates, or deletes anything, and never prints row contents — only
+  writes, updates, or deletes anything, and never prints row contents, only
   whether access succeeded.
 
 `scan-project` runs mode 1 and (if a URL is given) mode 2, and merges the
@@ -71,7 +71,7 @@ results into one report.
 
 ### Built-in limitations (by design)
 
-- CORS/secret detection is regex/heuristic-based, not a full AST parse —
+- CORS/secret detection is regex/heuristic-based, not a full AST parse,
   this keeps the dependency footprint small but can occasionally miss an
   unusual code shape or produce a rare false positive.
 - `scan-code` only looks at root-level `package.json` /
@@ -84,7 +84,7 @@ results into one report.
 
 If a specific line is a genuine false positive (or intentionally demonstrates
 a pattern, e.g. in docs or tests), add `vibe-audit-ignore` anywhere in a
-comment on that line or the line above it — same convention as
+comment on that line or the line above it, same convention as
 `eslint-disable-line`. This suppresses every finding on that line.
 
 ## Installation
@@ -101,7 +101,7 @@ npx vibe-audit scan-code .
 claude mcp add vibe-audit -- npx vibe-audit mcp
 ```
 
-This registers three tools — `scan_code`, `scan_url`, `scan_project` — that
+This registers three tools (`scan_code`, `scan_url`, `scan_project`) that
 Claude Code can call directly in conversation. See
 [Using it from Claude Code](#using-it-from-claude-code) below for how to make
 Claude use it proactively before a push.
@@ -134,11 +134,11 @@ Common options (available on all three `scan-*` commands):
 Every scan writes `vibe-audit-report.json`, `vibe-audit-report.md`, and/or
 `vibe-audit-report.pdf` depending on `--format`. The PDF includes a cover
 page with a score (0–100) and letter grade (A–F), a color-coded summary by
-severity, and one section per finding — sorted worst-first, with every
+severity, and one section per finding, sorted worst-first, with every
 secret masked, a plain-language description, and a concrete recommendation.
 
 **Exit codes**: `0` normally, `2` if any *critical* finding was found (for
-use in a pre-commit hook or CI gate if you want one — this isn't wired up by
+use in a pre-commit hook or CI gate if you want one, this isn't wired up by
 default), `1` on an error (e.g. an SSRF-blocked target).
 
 ## Using it from Claude Code
@@ -156,8 +156,8 @@ they get pushed or deployed.
   `scan_code` tool and summarize the results in plain language: how many
   issues were found, split by severity, and a short list of the critical/high
   ones with their one-line fix.
-- Do not block the push. Inform the user of what was found — especially
-  critical and high severity findings — and let them decide whether to fix
+- Do not block the push. Inform the user of what was found, especially
+  critical and high severity findings, and let them decide whether to fix
   first or push anyway. The default behavior is advisory, not enforced.
 - Exception: if the user has explicitly asked for a "strict" mode, respect
   that instead.
@@ -165,7 +165,7 @@ they get pushed or deployed.
 
 The default behavior is intentionally advisory: Claude informs and
 recommends, it never categorically refuses to help you push. You stay the
-decision-maker — unless you've explicitly told it otherwise.
+decision-maker, unless you've explicitly told it otherwise.
 
 ## Security posture of vibe-audit itself
 
@@ -174,13 +174,13 @@ Since this tool scans other people's projects, it needs to be trustworthy:
 - **SSRF guard**: `scan-url` resolves DNS once, validates every returned
   address (blocking RFC1918 private ranges, loopback, link-local, and cloud
   metadata endpoints like `169.254.169.254`), and connects only to that
-  validated address — never a second, independent DNS lookup — to close the
+  validated address (never a second, independent DNS lookup) to close the
   classic DNS-rebinding TOCTOU gap. Every redirect hop is re-validated the
   same way (never followed automatically). `localhost`/`127.0.0.1` are
   allowed only when explicitly targeted.
 - **GET/HEAD only, always**: no scan ever sends a write request. The
   Supabase RLS probe only reads, and never returns row contents in a report.
-- **Secrets are always masked** before they can appear in any report or log —
+- **Secrets are always masked** before they can appear in any report or log,
   see `core/mask_secret.ts`, exercised by dedicated tests.
 - **Strict timeouts and response size caps** on every outgoing request.
 - CI runs [Gitleaks](https://github.com/gitleaks/gitleaks) on every push/PR,
@@ -201,4 +201,4 @@ this repo.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

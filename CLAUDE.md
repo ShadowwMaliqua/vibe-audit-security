@@ -1,4 +1,4 @@
-# CLAUDE.md — vibe-audit
+# CLAUDE.md: vibe-audit
 
 This file documents the vibe-audit project itself, for anyone (human or
 Claude Code) working on this repository.
@@ -22,7 +22,7 @@ tools (`scan_code`, `scan_url`, `scan_project`) via `vibe-audit mcp`.
 ## Architecture
 
 ```
-src/core/          scanning engine — no dependency on the CLI or MCP SDK
+src/core/          scanning engine, no dependency on the CLI or MCP SDK
   types.ts           Finding / ScanResult / Severity types
   mask_secret.ts      secret masking, used everywhere a secret could leak
   ssrf_guard.ts        IP classification + DNS-rebinding-safe validation
@@ -36,8 +36,8 @@ src/core/          scanning engine — no dependency on the CLI or MCP SDK
   scanners/dynamic/*   mode 2 scanners
   report/               json.ts, markdown.ts, pdf.ts, summary.ts, write.ts
 
-src/cli/            commander-based CLI — thin wrapper around core
-src/mcp_server/      MCP tools — thin wrapper around core, same core calls as the CLI
+src/cli/            commander-based CLI, thin wrapper around core
+src/mcp_server/      MCP tools, thin wrapper around core, same core calls as the CLI
 ```
 
 **Rule: the CLI and the MCP server must never reimplement scanning logic.**
@@ -50,7 +50,7 @@ call it from both entry points.
   pattern-description text** (e.g. the string `"Use of eval()"` contains the
   literal substring `eval(`). Use the `// vibe-audit-ignore` inline
   suppression convention (`core/suppress.ts`) on the affected line rather
-  than reworking the wording — see the existing annotations in
+  than reworking the wording, see the existing annotations in
   `dangerous_patterns.ts` for the pattern. Prefer rewording first if it's
   easy (e.g. avoiding an uppercase SQL keyword in an unrelated sentence);
   reach for the suppression comment when rewording would hurt clarity.
@@ -58,22 +58,22 @@ call it from both entry points.
   `maskSecret`/`maskInText` from `core/mask_secret.ts`. Never put a raw
   secret in `evidence`, `codeBefore`, `codeAfter`, or any report output.
   There are tests (`tests/integration/*.test.ts`) that assert specific raw
-  fixture secrets never appear in generated reports — keep that invariant.
+  fixture secrets never appear in generated reports, keep that invariant.
 - **All network access in the dynamic scanners goes through `safeFetch`**
   (`core/safe_fetch.ts`), never a raw `fetch`. It enforces GET/HEAD only, a
   timeout, a response size cap, and SSRF validation on every redirect hop
-  (redirects are followed manually, revalidating the new host each time —
+  (redirects are followed manually, revalidating the new host each time,
   never `redirect: "follow"`).
 - **The Supabase RLS probe never runs unless `probeDatabase`/`--probe-database`
   is explicitly set**, and it never returns actual row contents in a
-  finding — only whether anonymous access succeeded.
+  finding, only whether anonymous access succeeded.
 - Static scanners receive a `StaticScanContext` (`rootDir` + a pre-walked
   `files` list from `fs_walk.ts`); dynamic scanners receive a
   `DynamicScanContext` (`baseUrl` + `probeDatabase`). Add a new scanner by
   matching one of these two signatures and registering it in
   `scan_code.ts` / `scan_url.ts`.
 - Every `Finding` needs both a short, LLM-actionable `shortAction` and a
-  longer `description` — the MCP tools and the CLI summary both rely on
+  longer `description`, the MCP tools and the CLI summary both rely on
   `shortAction` being genuinely one line and directly actionable.
 
 ## Commands
@@ -87,10 +87,10 @@ npm run dev -- scan-code .   # run the CLI from source via tsx, no build needed
 
 ## Testing
 
-- `tests/unit/` — one file per core module/scanner.
-- `tests/integration/` — runs the full `scanCode` pipeline (and report
+- `tests/unit/`, one file per core module/scanner.
+- `tests/integration/`, runs the full `scanCode` pipeline (and report
   generation) against `tests/fixtures/vulnerable-project` (deliberately
-  insecure — do not "fix" it, the tests assert these findings are detected)
+  insecure, do not "fix" it, the tests assert these findings are detected)
   and `tests/fixtures/clean-project` (must produce zero critical/high
   findings).
 - When adding a scanner or a new secret/dangerous pattern, add a unit test
@@ -107,8 +107,8 @@ run `node dist/cli/index.js mcp` and speak JSON-RPC over stdin/stdout
 ## Security posture of this repo
 
 This tool scans other people's projects, so it has to be trustworthy itself:
-no secrets in the repo (CI runs Gitleaks on every push/PR — see
+no secrets in the repo (CI runs Gitleaks on every push/PR, see
 `.gitleaks.toml` for the allowlist covering the intentionally-fake fixture
 secrets), `npm audit` in CI, and the SSRF guard is unit-tested against
 private/loopback/link-local/cloud-metadata ranges. Keep dependencies
-minimal — see the technical decisions in the README before adding a new one.
+minimal, see the technical decisions in the README before adding a new one.

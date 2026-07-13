@@ -33,7 +33,7 @@ type NodeLookupCallback = (
 
 /**
  * Builds a dns.lookup-compatible function that always returns the single,
- * already-validated address — regardless of what the system resolver would
+ * already-validated address, regardless of what the system resolver would
  * say. This is what makes the SSRF check TOCTOU-safe: the socket can only
  * ever connect to the address we inspected, never to a fresh DNS answer.
  */

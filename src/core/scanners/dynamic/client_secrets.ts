@@ -52,7 +52,7 @@ export async function fetchClientSideResources(baseUrl: string): Promise<ClientS
 
 /**
  * Runs the same secret patterns as the static scanner (secrets.ts) against
- * the rendered HTML and same-origin JS bundles — anything shipped to the
+ * the rendered HTML and same-origin JS bundles, anything shipped to the
  * browser is visible to every visitor.
  */
 export const scanClientSecrets: DynamicScanner = async (ctx) => {
@@ -71,7 +71,7 @@ export const scanClientSecrets: DynamicScanner = async (ctx) => {
         title: `${detection.label} exposed in client-side code`,
         severity: detection.severity,
         category: "client-secrets",
-        shortAction: `Remove the ${detection.label} from ${source.label} and rotate it — it is visible to every visitor`,
+        shortAction: `Remove the ${detection.label} from ${source.label} and rotate it, it is visible to every visitor`,
         description: `A value matching the pattern for a ${detection.label} was found in ${source.label}. Anything shipped to the browser is visible to every visitor, including this secret.`,
         recommendation:
           "Never ship server-side secrets to the client. Move this to a backend-only environment variable, and rotate the exposed credential.",

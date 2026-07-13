@@ -3,7 +3,7 @@ import type { ScanResult, Severity } from "../types.js";
 /**
  * A trimmed-down, LLM-friendly view of a ScanResult: a one-line headline, a
  * short list of the most important findings (each with a shortAction), and
- * — when a severity threshold is supplied — an explicit push/no-push
+ * (when a severity threshold is supplied) an explicit push/no-push
  * recommendation. This is what the MCP tools return (and what the CLI can
  * print) so an assistant summarizing results in a conversation doesn't have
  * to parse the full finding list itself.
@@ -23,7 +23,7 @@ export interface ScanSummary {
   grade: string;
   countsBySeverity: Record<Severity, number>;
   topFindings: FindingSummary[];
-  /** Only set when a severityThreshold was provided — a recommendation, never an enforced block. */
+  /** Only set when a severityThreshold was provided, a recommendation, never an enforced block. */
   recommendation?: "push_not_recommended" | "ok_to_push";
 }
 

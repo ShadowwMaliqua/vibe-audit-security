@@ -25,7 +25,7 @@ export function registerScanCodeTool(server: McpServer): void {
         "by string concatenation, hardcoded debug mode), and known-vulnerable dependencies. " +
         "Use this tool BEFORE suggesting or running `git push` or a deployment, so issues are caught while " +
         "still local. The response includes, per finding, a short actionable fix (shortAction) in addition " +
-        "to the full description — summarize the short list first and offer to apply fixes.",
+        "to the full description, summarize the short list first and offer to apply fixes.",
       inputSchema: {
         path: z.string().default(".").describe("Path to the project directory to scan"),
         severity_threshold: SEVERITY_ENUM.optional().describe(

@@ -23,7 +23,7 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
 /**
  * Read-only Supabase RLS check, disabled unless the caller explicitly opts
  * in via ctx.probeDatabase (--probe-database on the CLI). Only ever issues
- * GET requests, and never surfaces actual row contents in a finding — just
+ * GET requests, and never surfaces actual row contents in a finding, just
  * whether anonymous access to a common table name succeeded.
  */
 export const scanSupabaseRls: DynamicScanner = async (ctx) => {
@@ -55,7 +55,7 @@ export const scanSupabaseRls: DynamicScanner = async (ctx) => {
         "Re-run with --probe-database (only on projects you own) to check whether RLS actually blocks anonymous access",
       description:
         `A Supabase project (${supabaseUrl}) and a public anon key were found in the client-side code. This ` +
-        "is expected — Supabase anon keys are meant to be public — but it only stays safe if Row Level " +
+        "is expected (Supabase anon keys are meant to be public) but it only stays safe if Row Level " +
         "Security is correctly enabled on every table.",
       recommendation:
         "Run vibe-audit scan-url with --probe-database on a project you own to perform a read-only check of common table names.",
@@ -96,7 +96,7 @@ export const scanSupabaseRls: DynamicScanner = async (ctx) => {
       description:
         `An anonymous, read-only request to "${table}" returned data. This means Row Level Security is ` +
         "either disabled on this table or its policy allows anonymous reads. Row contents are never shown " +
-        "in this report — only the fact that access succeeded.",
+        "in this report, only the fact that access succeeded.",
       recommendation: `Run "ALTER TABLE ${table} ENABLE ROW LEVEL SECURITY;" and add a policy that only allows the intended users to read rows.`,
       location: endpoint,
     });

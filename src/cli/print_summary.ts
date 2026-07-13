@@ -1,7 +1,7 @@
 import type { ScanSummary } from "../core/report/summary.js";
 import type { ReportFormat } from "../core/report/write.js";
 
-/** Console summary shared by every scan command — kept out of core since it's presentation, not scanning logic. */
+/** Console summary shared by every scan command, kept out of core since it's presentation, not scanning logic. */
 export function printSummary(summary: ScanSummary, written: Partial<Record<ReportFormat, string>>): void {
   console.log(summary.headline);
 

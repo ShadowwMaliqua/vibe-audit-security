@@ -15,7 +15,7 @@ export interface ScanProjectOptions {
 /**
  * Runs scan-code and/or scan-url (whichever targets are provided) and
  * merges the results into a single report. This never re-implements
- * scanning logic itself — it only calls scanCode/scanUrl and combines
+ * scanning logic itself, it only calls scanCode/scanUrl and combines
  * their output, so CLI and MCP stay thin wrappers around the same core.
  */
 export async function scanProject(options: ScanProjectOptions): Promise<ScanResult> {

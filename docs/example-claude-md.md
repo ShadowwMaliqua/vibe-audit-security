@@ -14,8 +14,8 @@ they get pushed or deployed.
   `scan_code` tool and summarize the results in plain language: how many
   issues were found, split by severity, and a short list of the critical/high
   ones with their one-line fix.
-- Do not block the push. Inform the user of what was found — especially
-  critical and high severity findings — and let them decide whether to fix
+- Do not block the push. Inform the user of what was found, especially
+  critical and high severity findings, and let them decide whether to fix
   first or push anyway. The default behavior is advisory, not enforced.
 - Exception: if the user has explicitly asked for a "strict" mode (e.g. "never
   let me push with critical issues"), then respect that and refuse to proceed
