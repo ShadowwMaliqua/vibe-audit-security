@@ -62,7 +62,7 @@ function missingCookieExplanation(missing: string[]): string {
     parts.push("without Secure, the cookie can be sent over plain HTTP and intercepted on the network");
   }
   if (missing.includes("HttpOnly")) {
-    parts.push("without HttpOnly, JavaScript — including an injected XSS payload — can read this cookie");
+    parts.push("without HttpOnly, JavaScript (including an injected XSS payload) can read this cookie");
   }
   if (missing.includes("SameSite")) {
     parts.push("without SameSite, the cookie may be sent along with cross-site requests, which can enable CSRF");
@@ -93,7 +93,7 @@ function checkCookies(headers: Headers, baseUrl: string): Finding[] {
       severity: missing.includes("Secure") || missing.includes("HttpOnly") ? "high" : "medium",
       category: "cookies",
       shortAction: `Set ${missing.join(", ")} on the "${cookieName}" cookie`,
-      description: `The cookie "${cookieName}" is missing: ${missing.join(", ")} — ${missingCookieExplanation(missing)}`,
+      description: `The cookie "${cookieName}" is missing: ${missing.join(", ")}, ${missingCookieExplanation(missing)}`,
       recommendation: "Set the missing attribute(s), e.g. `Set-Cookie: name=value; Secure; HttpOnly; SameSite=Lax`.",
       location: baseUrl,
     });

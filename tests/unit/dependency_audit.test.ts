@@ -27,7 +27,7 @@ describe("scanDependencies", () => {
     const ctx: StaticScanContext = { rootDir, files: ["requirements.txt"] };
     const findings = await scanDependencies(ctx);
     // Either pip-audit is installed in the sandbox and returns real findings,
-    // or it's missing and we get a single informational finding — both are fine,
+    // or it's missing and we get a single informational finding, both are fine,
     // the important part is that it never throws.
     expect(Array.isArray(findings)).toBe(true);
     for (const finding of findings) {

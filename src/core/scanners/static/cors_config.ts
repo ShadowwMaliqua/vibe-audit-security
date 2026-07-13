@@ -47,7 +47,7 @@ function hasRawWildcardCredentials(content: string): boolean {
 
 /**
  * Heuristic (regex-based, not a full parser) scan for Express `cors()` and
- * FastAPI `CORSMiddleware` configurations — and raw header juggling — that
+ * FastAPI `CORSMiddleware` configurations (and raw header juggling) that
  * combine a wildcard/any origin with credentials enabled.
  */
 export const scanCorsConfig: StaticScanner = async (ctx) => {
@@ -80,7 +80,7 @@ export const scanCorsConfig: StaticScanner = async (ctx) => {
             description:
               "This CORS configuration combines a wildcard/any origin with credentials enabled. Browsers " +
               "already forbid this combination for real credentialed requests, so servers that accept it " +
-              "typically end up reflecting the request's Origin header — which lets any website read " +
+              "typically end up reflecting the request's Origin header, which lets any website read " +
               "authenticated responses from this API on behalf of a logged-in visitor.",
             recommendation:
               'List explicit allowed origins (e.g. your production domain and localhost for dev) instead of ' +

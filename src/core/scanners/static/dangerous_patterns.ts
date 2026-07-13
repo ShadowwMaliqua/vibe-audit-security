@@ -23,7 +23,7 @@ const SQL_KEYWORDS = "(?:SELECT|INSERT|UPDATE|DELETE)";
 const DANGEROUS_PATTERNS: DangerousPattern[] = [
   {
     // vibe-audit-ignore: this whole block *describes* eval()/new Function() in
-    // plain English for the report — it inevitably contains the literal
+    // plain English for the report, it inevitably contains the literal
     // substrings its own regex looks for.
     id: "eval-usage",
     title: "Use of eval()", // vibe-audit-ignore

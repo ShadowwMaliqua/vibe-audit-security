@@ -30,7 +30,7 @@ function fileExplanation(candidatePath: string): string {
   if (candidatePath.startsWith(".git/")) {
     return (
       "Exposing .git lets an attacker reconstruct the entire source code history, including anything ever " +
-      "committed — even files that were later deleted."
+      "committed, even files that were later deleted."
     );
   }
   if (candidatePath.includes("credentials")) {

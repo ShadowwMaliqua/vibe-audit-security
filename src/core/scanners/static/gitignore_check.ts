@@ -93,8 +93,8 @@ export const scanGitignore: StaticScanner = async (ctx) => {
       category: "gitignore",
       shortAction: "Add a .gitignore that excludes .env, key files, and other credentials before committing",
       description:
-        "This project has no .gitignore file. Without one, any file you create — including .env, private " +
-        "keys, or cloud credential files — can be committed and pushed by accident.",
+        "This project has no .gitignore file. Without one, any file you create, including .env, private " +
+        "keys, or cloud credential files, can be committed and pushed by accident.",
       recommendation:
         "Create a .gitignore at the project root covering at least: .env, .env.*, *.pem, *.key, *.p12, " +
         "*.pfx, credentials.json, serviceAccountKey.json.",
@@ -120,7 +120,7 @@ export const scanGitignore: StaticScanner = async (ctx) => {
         shortAction: `Add "${path.basename(relPath)}" (or a matching pattern) to .gitignore before committing`,
         description:
           `"${relPath}" looks like a ${rule.label}, but it is not covered by any .gitignore rule. If this ` +
-          "repository is committed as-is, this file — and any secret inside it — will be pushed to version control.",
+          "repository is committed as-is, this file (and any secret inside it) will be pushed to version control.",
         recommendation:
           `Add an entry covering this file to .gitignore (for example "${path.basename(relPath)}" or a ` +
           "matching pattern), then remove it from git history if it was already committed.",

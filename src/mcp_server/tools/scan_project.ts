@@ -20,7 +20,7 @@ export function registerScanProjectTool(server: McpServer): void {
         "Runs scan_code against a local project directory and, if a URL is given, also runs scan_url " +
         "against it, then merges the results into one report. Use this before a git push or deployment when " +
         "the project is also already running somewhere you can reach (e.g. localhost during dev, or a " +
-        "staging URL you own) — it gives the most complete picture in a single call.",
+        "staging URL you own), it gives the most complete picture in a single call.",
       inputSchema: {
         path: z.string().default(".").describe("Path to the local project directory to scan"),
         url: z.string().url().optional().describe("Optional URL to also scan; only use one the user owns or is authorized to test"),

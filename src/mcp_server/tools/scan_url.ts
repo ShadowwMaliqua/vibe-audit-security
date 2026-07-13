@@ -39,7 +39,7 @@ export function registerScanUrlTool(server: McpServer): void {
             "Only set this to true if the user has explicitly confirmed, in this conversation, that they own " +
               "the Supabase project being scanned. When true, sends additional read-only GET requests to a " +
               "fixed list of common table names against the detected Supabase REST API to check whether Row " +
-              "Level Security blocks anonymous access — it never writes, updates, or deletes data, and never " +
+              "Level Security blocks anonymous access, it never writes, updates, or deletes data, and never " +
               "returns row contents in the report. Do not set this automatically without explicit confirmation.",
           ),
       },

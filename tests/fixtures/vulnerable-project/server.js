@@ -1,5 +1,5 @@
 // Intentionally vulnerable fixture used to test vibe-audit's own scanners.
-// Every issue in this file is deliberate — do not "fix" it, that would
+// Every issue in this file is deliberate, do not "fix" it, that would
 // break the test suite that asserts these findings are detected.
 const express = require("express");
 const cors = require("cors");

@@ -100,7 +100,7 @@ export function classifyIp(ip: string): IpClassification {
 
 /**
  * True when the user's original input literally targets the local loopback
- * (by name or address) — the one case where loopback is allowed. This does
+ * (by name or address), the one case where loopback is allowed. This does
  * NOT relax checks on any other private/internal range: if a hostname like
  * "localhost" somehow resolves to a non-loopback address (e.g. via a
  * tampered /etc/hosts), that address is still blocked by resolveAndValidateHost.

@@ -7,7 +7,7 @@ import { registerScanUrlTool } from "./tools/scan_url.js";
 /**
  * Starts the vibe-audit MCP server over stdio. This is the entry point
  * `claude mcp add` should point at (via `vibe-audit mcp`). It only wires
- * tools to the core scan functions — no scanning logic lives here.
+ * tools to the core scan functions, no scanning logic lives here.
  */
 export async function startMcpServer(): Promise<void> {
   const server = new McpServer({ name: "vibe-audit", version: "0.1.0" });
