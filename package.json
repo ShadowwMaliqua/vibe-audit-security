@@ -1,0 +1,50 @@
+{
+  "name": "vibe-audit",
+  "version": "0.1.0",
+  "description": "Security scanner for vibe-coded projects: local CLI and MCP server that catch the security mistakes an AI coding assistant can silently introduce (hardcoded secrets, disabled RLS, open CORS, missing security headers) before you push.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "vibe-audit": "dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "dev": "tsx src/cli/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "security",
+    "scanner",
+    "mcp",
+    "claude-code",
+    "vibe-coding",
+    "ssrf",
+    "cors",
+    "secrets",
+    "supabase",
+    "rls"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "commander": "^13.1.0",
+    "pdfkit": "^0.15.2",
+    "undici": "^7.7.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/pdfkit": "^0.13.9",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

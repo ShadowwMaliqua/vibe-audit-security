@@ -1,0 +1,10 @@
+title = "vibe-audit gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Deliberately fake secrets used as fixtures to test vibe-audit's own scanners"
+paths = [
+  '''tests/fixtures/vulnerable-project/.*''',
+]
