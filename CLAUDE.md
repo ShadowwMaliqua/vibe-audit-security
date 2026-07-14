@@ -1,7 +1,6 @@
-# CLAUDE.md: vibe-audit
+# CLAUDE.md
 
-This file documents the vibe-audit project itself, for anyone (human or
-Claude Code) working on this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What this project is
 
@@ -31,6 +30,7 @@ src/core/          scanning engine, no dependency on the CLI or MCP SDK
   scoring.ts               score/grade + severity sort, shared by all modes
   secret_patterns.ts        secret regexes shared by static + dynamic scanners
   text_location.ts           file:line helpers shared by static scanners
+  suppress.ts                 inline `vibe-audit-ignore` suppression check
   scan_code.ts / scan_url.ts / scan_project.ts   mode orchestrators
   scanners/static/*    mode 1 scanners
   scanners/dynamic/*   mode 2 scanners
@@ -59,6 +59,13 @@ call it from both entry points.
   secret in `evidence`, `codeBefore`, `codeAfter`, or any report output.
   There are tests (`tests/integration/*.test.ts`) that assert specific raw
   fixture secrets never appear in generated reports, keep that invariant.
+- **Test fixtures must not contain realistic-looking secrets.** GitHub's
+  push protection blocks pushes containing strings that match known
+  credential formats regardless of how obviously fake they look (a
+  repeated-character `sk_live_XXXX...` still trips it). Build fake secrets
+  via string concatenation in test source (e.g. `` `sk_live_${"X".repeat(24)}` ``)
+  rather than a literal, and prefer vendor-published placeholders (e.g. AWS's
+  own `AKIAIOSFODNN7EXAMPLE`) in committed fixture files.
 - **All network access in the dynamic scanners goes through `safeFetch`**
   (`core/safe_fetch.ts`), never a raw `fetch`. It enforces GET/HEAD only, a
   timeout, a response size cap, and SSRF validation on every redirect hop
@@ -75,6 +82,25 @@ call it from both entry points.
 - Every `Finding` needs both a short, LLM-actionable `shortAction` and a
   longer `description`, the MCP tools and the CLI summary both rely on
   `shortAction` being genuinely one line and directly actionable.
+- **Findings are advisory, never enforced.** The CLI/MCP `severity_threshold`
+  option only adds a `recommendation` field (`push_not_recommended` /
+  `ok_to_push`); nothing in this tool blocks a push. Keep new behavior
+  consistent with that: inform, don't gate, unless a feature is explicitly
+  designed as an opt-in strict mode.
+- No em dashes in user-facing strings or docs (finding text, CLI/MCP output,
+  markdown), use commas, colons, or parentheses instead.
+- **The npm package and GitHub repo are named `vibe-audit-security`**, not
+  `vibe-audit` (that name was already taken on npm by an unrelated package).
+  The CLI command and the `vibe-audit-ignore` suppression comment keep the
+  shorter `vibe-audit` name, `package.json` declares both as `bin` entries
+  so `npx vibe-audit-security ...` resolves correctly.
+- **`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`** make
+  this installable as a Claude Code plugin (`/plugin marketplace add
+  <owner>/<repo>`). In `marketplace.json`, use `"source": {"source": "url",
+  "url": "https://github.com/..."}` for the plugin source, not `"source":
+  "github"` with a `repo` field, the `github` source type clones over SSH
+  and fails for anyone without SSH keys configured for GitHub. Run `claude
+  plugin validate .` after editing either file.
 
 ## Commands
 
@@ -84,6 +110,8 @@ npm run build       # tsc -> dist/
 npm test            # vitest run (unit + integration)
 npm run dev -- scan-code .   # run the CLI from source via tsx, no build needed
 ```
+
+To run a single test file: `npx vitest run tests/unit/secrets.test.ts`.
 
 ## Testing
 
@@ -95,6 +123,11 @@ npm run dev -- scan-code .   # run the CLI from source via tsx, no build needed
   findings).
 - When adding a scanner or a new secret/dangerous pattern, add a unit test
   with a minimal inline snippet, not just fixture coverage.
+- After changing anything in `scanners/static/`, regenerate
+  `examples/sample-report.md` by running `scanCode` against
+  `tests/fixtures/vulnerable-project` and writing the markdown output (see
+  git history for the throwaway-script pattern used previously), so the
+  README-linked example stays in sync.
 
 ## MCP server
 
@@ -112,3 +145,7 @@ no secrets in the repo (CI runs Gitleaks on every push/PR, see
 secrets), `npm audit` in CI, and the SSRF guard is unit-tested against
 private/loopback/link-local/cloud-metadata ranges. Keep dependencies
 minimal, see the technical decisions in the README before adding a new one.
+
+The tool prints a legal disclaimer on every CLI invocation (only scan
+targets you own or are authorized to test) and an extra warning before
+`--probe-database` runs. Don't remove or weaken either.

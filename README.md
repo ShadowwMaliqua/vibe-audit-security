@@ -1,10 +1,14 @@
-# vibe-audit
+# vibe-audit-security
 
 A local security scanner for vibe-coded projects, apps built with AI coding
 assistants (Claude, Cursor, etc). It catches the kind of security mistakes an
 AI assistant can introduce without anyone noticing: hardcoded API keys,
 disabled Row Level Security, wide-open CORS, missing security headers, and
 more, before you `git push` or deploy.
+
+> Published on npm and GitHub as `vibe-audit-security` (the name `vibe-audit`
+> was already taken by an unrelated package). The CLI command itself is
+> still `vibe-audit` once installed, see [Installation](#installation) below.
 
 It ships as both a **CLI** and an **MCP server** you can wire into Claude
 Code, so Claude can scan your project and summarize the findings in plain
