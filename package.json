@@ -1,11 +1,20 @@
 {
-  "name": "vibe-audit",
+  "name": "vibe-audit-security",
   "version": "0.1.0",
   "description": "Security scanner for vibe-coded projects: local CLI and MCP server that catch the security mistakes an AI coding assistant can silently introduce (hardcoded secrets, disabled RLS, open CORS, missing security headers) before you push.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShadowwMaliqua/vibe-audit-security.git"
+  },
+  "homepage": "https://github.com/ShadowwMaliqua/vibe-audit-security#readme",
+  "bugs": {
+    "url": "https://github.com/ShadowwMaliqua/vibe-audit-security/issues"
+  },
   "bin": {
-    "vibe-audit": "dist/cli/index.js"
+    "vibe-audit": "dist/cli/index.js",
+    "vibe-audit-security": "dist/cli/index.js"
   },
   "files": [
     "dist"

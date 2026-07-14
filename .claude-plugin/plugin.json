@@ -1,0 +1,18 @@
+{
+  "name": "vibe-audit-security",
+  "description": "Security scanner for vibe-coded projects: catches hardcoded secrets, disabled Supabase/Postgres RLS, open CORS, missing security headers, and other AI-assistant security mistakes before you push.",
+  "version": "0.1.0",
+  "author": {
+    "name": "ShadowwMaliqua",
+    "url": "https://github.com/ShadowwMaliqua"
+  },
+  "homepage": "https://github.com/ShadowwMaliqua/vibe-audit-security#readme",
+  "license": "MIT",
+  "keywords": ["security", "scanner", "secrets", "rls", "cors", "vibe-coding"],
+  "mcpServers": {
+    "vibe-audit-security": {
+      "command": "npx",
+      "args": ["-y", "vibe-audit-security", "mcp"]
+    }
+  }
+}

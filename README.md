@@ -92,19 +92,29 @@ comment on that line or the line above it, same convention as
 Run it directly with `npx`, no install required:
 
 ```bash
-npx vibe-audit scan-code .
+npx vibe-audit-security scan-code .
 ```
 
 ### Adding it to Claude Code as an MCP server
 
 ```bash
-claude mcp add vibe-audit -- npx vibe-audit mcp
+claude mcp add vibe-audit -- npx vibe-audit-security mcp
 ```
 
 This registers three tools (`scan_code`, `scan_url`, `scan_project`) that
 Claude Code can call directly in conversation. See
 [Using it from Claude Code](#using-it-from-claude-code) below for how to make
 Claude use it proactively before a push.
+
+### Installing as a Claude Code plugin
+
+```bash
+/plugin marketplace add ShadowwMaliqua/vibe-audit-security
+/plugin install vibe-audit-security@vibe-audit-security-marketplace
+```
+
+This installs the MCP server the same way as the `claude mcp add` command
+above, packaged as a plugin.
 
 ## Usage
 
