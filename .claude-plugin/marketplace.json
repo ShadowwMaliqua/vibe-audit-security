@@ -9,8 +9,8 @@
     {
       "name": "vibe-audit-security",
       "source": {
-        "source": "github",
-        "repo": "ShadowwMaliqua/vibe-audit-security"
+        "source": "url",
+        "url": "https://github.com/ShadowwMaliqua/vibe-audit-security.git"
       },
       "description": "Local security scanner (CLI + MCP server) for AI-assisted coding projects: secrets, RLS, CORS, security headers, and more."
     }
